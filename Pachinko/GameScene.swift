@@ -26,8 +26,13 @@ class GameScene: SKScene {
         createBouncer(at: CGPoint(x: 0, y: 0))
         createBouncer(at: CGPoint(x: 256, y: 0))
         createBouncer(at: CGPoint(x: 512, y: 0))
-        createBouncer(at: CGPoint(x: 778, y: 0))
-        createBouncer(at: CGPoint(x: 1034, y: 0))
+        createBouncer(at: CGPoint(x: 768, y: 0))
+        createBouncer(at: CGPoint(x: 1024, y: 0))
+        
+        createSlot(at: CGPoint(x: 128, y: 0), isGood: true)
+        createSlot(at: CGPoint(x: 384, y: 0), isGood: false)
+        createSlot(at: CGPoint(x: 640, y: 0), isGood: true)
+        createSlot(at: CGPoint(x: 896, y: 0), isGood: false)
     }
     
     
@@ -49,5 +54,27 @@ class GameScene: SKScene {
         bouncer.physicsBody?.isDynamic = false
         bouncer.position               = position
         addChild(bouncer)
+    }
+    
+    func createSlot(at position: CGPoint, isGood: Bool) {
+        var glow        = SKSpriteNode()
+        var slot        = SKSpriteNode()
+       
+        if isGood {
+            glow        = SKSpriteNode(imageNamed: "slotGlowGood")
+            slot        = SKSpriteNode(imageNamed: "slotBaseGood")
+        }else {
+            glow        = SKSpriteNode(imageNamed: "slotGlowBad")
+            slot        = SKSpriteNode(imageNamed: "slotBaseBad")
+        }
+        slot.position   = position
+        glow.position   = position
+        
+        addChild(glow)
+        addChild(slot)
+        
+        let spin        = SKAction.rotate(byAngle: .pi, duration: 10)
+        let spinForever = SKAction.repeatForever(spin)
+        glow.run(spinForever)
     }
 }
