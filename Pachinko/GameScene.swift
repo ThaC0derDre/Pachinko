@@ -11,16 +11,18 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         let background          = SKSpriteNode(imageNamed: "background")
+// center of screen
         background.position     = CGPoint(x: 512, y: 384)
         
-        // Bleand = How to draw. .replace = draw without worrying about alpha values, good for objects without gaps like our background
+// Blend = How to draw.
+//.replace = draw without worrying about alpha values, good for objects without gaps like our background
         background.blendMode    = .replace
         
-        //zPosition = where layer is placed. -1 = behind everything else
+//zPosition = where layer is placed. -1 = behind everything else
         background.zPosition    = -1
         addChild(background)
         
-    // add physics to the whole scene
+// add physics to the whole scene
         physicsBody             = SKPhysicsBody(edgeLoopFrom: frame)
         
         createBouncer(at: CGPoint(x: 0, y: 0))
@@ -44,6 +46,7 @@ class GameScene: SKScene {
         ball.physicsBody                = SKPhysicsBody(circleOfRadius: ball.frame.width / 2)
         ball.physicsBody?.restitution   = 0.4
         ball.position                   = location
+        ball.name                       = "Ball"
         addChild(ball)
     }
     
@@ -56,25 +59,29 @@ class GameScene: SKScene {
         addChild(bouncer)
     }
     
+    
     func createSlot(at position: CGPoint, isGood: Bool) {
-        var glow        = SKSpriteNode()
-        var slot        = SKSpriteNode()
+        var glow            = SKSpriteNode()
+        var slot            = SKSpriteNode()
        
         if isGood {
-            glow        = SKSpriteNode(imageNamed: "slotGlowGood")
-            slot        = SKSpriteNode(imageNamed: "slotBaseGood")
+            glow            = SKSpriteNode(imageNamed: "slotGlowGood")
+            slot            = SKSpriteNode(imageNamed: "slotBaseGood")
+            slot.name       = "Good Slot"
         }else {
-            glow        = SKSpriteNode(imageNamed: "slotGlowBad")
-            slot        = SKSpriteNode(imageNamed: "slotBaseBad")
+            glow            = SKSpriteNode(imageNamed: "slotGlowBad")
+            slot            = SKSpriteNode(imageNamed: "slotBaseBad")
+            slot.name       = "Bad Slot"
         }
-        slot.position   = position
-        glow.position   = position
         
+        slot.position       = position
+        slot.physicsBody    = SKPhysicsBody(rectangleOf: slot.size)
+        glow.position       = position
         addChild(glow)
         addChild(slot)
         
-        let spin        = SKAction.rotate(byAngle: .pi, duration: 10)
-        let spinForever = SKAction.repeatForever(spin)
+        let spin            = SKAction.rotate(byAngle: .pi, duration: 10)
+        let spinForever     = SKAction.repeatForever(spin)
         glow.run(spinForever)
     }
 }
